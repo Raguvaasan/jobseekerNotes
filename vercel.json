@@ -1,22 +1,20 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
+    "version": 2,
+    "builds": [{
+        "src": "package.json",
+        "use": "@vercel/next"
+    }],
+    "routes": [{
+        "src": "/api/(.*)",
+        "dest": "/api/$1"
+    }],
+
+    "env": {
+        "DB_HOST": "DB_HOST",
+        "DB_USER": "DB_USER",
+        "DB_PASSWORD": "DB_PASSWORD",
+        "DB_NAME": "DB_NAME"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    }
-  ],
-  "env": {
-    "DATABASE_HOST": "@database_host",
-    "DATABASE_USER": "@database_user", 
-    "DATABASE_PASSWORD": "@database_password",
-    "DATABASE_NAME": "@database_name",
-    "JWT_SECRET": "@jwt_secret"
-  }
+
+
 }

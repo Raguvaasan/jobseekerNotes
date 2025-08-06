@@ -6,10 +6,10 @@ services:
       dockerfile: Dockerfile
     environment:
       - NODE_ENV=production
-      - DATABASE_HOST=${{DATABASE_HOST}}
-      - DATABASE_USER=${{DATABASE_USER}}
-      - DATABASE_PASSWORD=${{DATABASE_PASSWORD}}
-      - DATABASE_NAME=${{DATABASE_NAME}}
+      - DB_HOST=${{DB_HOST}}
+      - DB_USER=${{DB_USER}}
+      - DB_PASSWORD=${{DB_PASSWORD}}
+      - DB_NAME=${{DB_NAME}}
       - JWT_SECRET=${{JWT_SECRET}}
     ports:
       - 3000
@@ -18,9 +18,9 @@ services:
     image: mysql:8.0
     environment:
       - MYSQL_ROOT_PASSWORD=${{MYSQL_ROOT_PASSWORD}}
-      - MYSQL_DATABASE=${{DATABASE_NAME}}
-      - MYSQL_USER=${{DATABASE_USER}}
-      - MYSQL_PASSWORD=${{DATABASE_PASSWORD}}
+      - MYSQL_DATABASE=${{DB_NAME}}
+      - MYSQL_USER=${{DB_USER}}
+      - MYSQL_PASSWORD=${{DB_PASSWORD}}
     volumes:
       - mysql_data:/var/lib/mysql
       - ./backend/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql

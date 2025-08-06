@@ -1,21 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  env: {
-    DATABASE_HOST: process.env.DATABASE_HOST,
-    DATABASE_USER: process.env.DATABASE_USER,
-    DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
-    DATABASE_NAME: process.env.DATABASE_NAME,
-    JWT_SECRET: process.env.JWT_SECRET,
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/backend/:path*',
-        destination: 'http://localhost:3001/api/:path*',
-      },
-    ];
-  },
+    output: 'standalone',
+    env: {
+        DB_HOST: process.env.DB_HOST,
+        DB_USER: process.env.DB_USER,
+        DB_PASSWORD: process.env.DB_PASSWORD,
+        DB_NAME: process.env.DB_NAME,
+        JWT_SECRET: process.env.JWT_SECRET,
+    },
+    async rewrites() {
+        return [{
+            source: '/api/backend/:path*',
+            destination: 'http://localhost:3001/api/:path*',
+        }, ];
+    },
 };
 
 module.exports = nextConfig;

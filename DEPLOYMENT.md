@@ -21,10 +21,10 @@
    - Go to [vercel.com](https://vercel.com)
    - Import your GitHub repository
    - Set environment variables:
-     - `DATABASE_HOST`
-     - `DATABASE_USER`
-     - `DATABASE_PASSWORD`
-     - `DATABASE_NAME`
+     - `DB_HOST`
+     - `DB_USER`
+     - `DB_PASSWORD`
+     - `DB_NAME`
      - `JWT_SECRET`
 
 3. **Set up Database:**
@@ -68,10 +68,10 @@
 2. **Run locally:**
    ```bash
    docker run -p 3000:3000 -p 3001:3001 \
-     -e DATABASE_HOST=your-host \
-     -e DATABASE_USER=your-user \
-     -e DATABASE_PASSWORD=your-password \
-     -e DATABASE_NAME=jobseeker_db \
+     -e DB_HOST=your-host \
+     -e DB_USER=your-user \
+     -e DB_PASSWORD=your-password \
+     -e DB_NAME=jobseeker_db \
      -e JWT_SECRET=your-secret \
      jobseeker-app
    ```
@@ -98,10 +98,10 @@
 ## 🔧 Environment Variables Required
 
 ```env
-DATABASE_HOST=your-database-host
-DATABASE_USER=your-database-user
-DATABASE_PASSWORD=your-database-password
-DATABASE_NAME=jobseeker_db
+DB_HOST=your-database-host
+DB_USER=your-database-user
+DB_PASSWORD=your-database-password
+DB_NAME=jobseeker_db
 JWT_SECRET=your-super-secret-jwt-key
 NODE_ENV=production
 ```
