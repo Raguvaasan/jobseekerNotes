@@ -1,18 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import pool from '@/utils/db';
+import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
-interface Note {
+interface Note extends RowDataPacket {
   id: number;
   jobseeker_id: number;
   note: string;
   created_by: string;
   created_at: string;
-}
-
-interface User {
-  id: number;
-  name: string;
-  role: string;
 }
 
 const mockUser = {
@@ -69,15 +64,15 @@ export async function POST(
     }
 
     // Insert into database
-    const [result] = await pool.query(
+    const [result] = await pool.query<ResultSetHeader>(
       'INSERT INTO jobseeker_notes (jobseeker_id, note, created_by) VALUES (?, ?, ?)',
       [jobseekerId, note.trim(), mockUser.name]
     );
 
     // Fetch the newly created note
-    const [newNote]:any = await pool.query(
+    const [newNote] = await pool.query<Note[]>(
       'SELECT * FROM jobseeker_notes WHERE id = ?',
-      [(result as any).insertId]
+      [result.insertId]
     );
 
     return NextResponse.json({
@@ -115,12 +110,12 @@ export async function PUT(
     }
 
     // Update note in database
-    const [result] = await pool.query(
+    const [result] = await pool.query<ResultSetHeader>(
       'UPDATE jobseeker_notes SET note = ? WHERE id = ? AND jobseeker_id = ?',
       [note.trim(), noteId, jobseekerId]
     );
 
-    if ((result as any).affectedRows === 0) {
+    if (result.affectedRows === 0) {
       return NextResponse.json(
         { success: false, error: 'Note not found' },
         { status: 404 }
@@ -128,7 +123,7 @@ export async function PUT(
     }
 
     // Fetch updated note
-    const [updatedNote] = await pool.query(
+    const [updatedNote] = await pool.query<Note[]>(
       'SELECT * FROM jobseeker_notes WHERE id = ?',
       [noteId]
     );
@@ -136,7 +131,7 @@ export async function PUT(
     return NextResponse.json({
       success: true,
       message: 'Note updated successfully',
-      data: (updatedNote as any)[0]
+      data: updatedNote[0]
     });
 
   } catch (error) {
@@ -166,12 +161,12 @@ export async function DELETE(
       );
     }
 
-    const [result] = await pool.query(
+    const [result] = await pool.query<ResultSetHeader>(
       'DELETE FROM jobseeker_notes WHERE id = ? AND jobseeker_id = ?',
       [noteId, jobseekerId]
     );
 
-    if ((result as any).affectedRows === 0) {
+    if (result.affectedRows === 0) {
       return NextResponse.json(
         { success: false, error: 'Note not found' },
         { status: 404 }

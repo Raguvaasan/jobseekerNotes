@@ -25,23 +25,22 @@ export default function JobseekerProfile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Mock data for demonstration
-    const mockJobseeker: Jobseeker = {
-      id: parseInt(jobseekerId),
-      name: 'Alice Johnson',
-      email: 'alice@example.com',
-      phone: '+1234567890',
-      location: 'New York, NY',
-      experience_years: 3,
-      skills: 'JavaScript, React, Node.js, TypeScript, MongoDB',
-      status: 'Active',
-      created_at: '2024-01-15T10:30:00Z'
+    const fetchJobseeker = async () => {
+      try {
+        const response = await fetch(`/api/jobseeker/${jobseekerId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch jobseeker data');
+        }
+        const data = await response.json();
+        setJobseeker(data.data);
+      } catch (error) {
+        console.error('Error fetching jobseeker:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setTimeout(() => {
-      setJobseeker(mockJobseeker);
-      setLoading(false);
-    }, 500);
+    fetchJobseeker();
   }, [jobseekerId]);
 
   if (loading) {
@@ -57,7 +56,7 @@ export default function JobseekerProfile() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Jobseeker Not Found</h1>
-          <Link href="/" className="text-blue-600 hover:text-blue-800">
+          <Link href="/jobseekers" className="text-blue-600 hover:text-blue-800">
             Back to Home
           </Link>
         </div>
@@ -73,7 +72,7 @@ export default function JobseekerProfile() {
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
               <Link 
-                href="/"
+                href="/jobseekers"
                 className="text-blue-600 hover:text-blue-800 mr-4"
               >
                 ← Back
@@ -101,7 +100,7 @@ export default function JobseekerProfile() {
               <div className="flex-shrink-0">
                 <div className="h-20 w-20 bg-blue-600 rounded-full flex items-center justify-center">
                   <span className="text-2xl font-bold text-white">
-                    {jobseeker.name.split(' ').map(n => n[0]).join('')}
+                    {jobseeker?.name ? jobseeker.name.split(' ').map(n => n[0]).join('') : ''}
                   </span>
                 </div>
               </div>
@@ -150,14 +149,14 @@ export default function JobseekerProfile() {
                 <div>
                   <h3 className="text-lg font-medium text-gray-900 mb-3">Skills</h3>
                   <div className="flex flex-wrap gap-2">
-                    {jobseeker.skills.split(',').map((skill, index) => (
+                    {jobseeker?.skills ? jobseeker.skills.split(',').map((skill, index) => (
                       <span
                         key={index}
                         className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
                       >
                         {skill.trim()}
                       </span>
-                    ))}
+                    )) : null}
                   </div>
                 </div>
                 

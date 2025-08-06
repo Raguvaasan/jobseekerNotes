@@ -19,50 +19,25 @@ export default function JobseekersPage() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // Mock data for demonstration
-    const mockJobseekers: Jobseeker[] = [
-      {
-        id: 1,
-        name: 'Alice Johnson',
-        email: 'alice@example.com',
-        location: 'New York, NY',
-        experience_years: 3,
-        skills: 'JavaScript, React, Node.js',
-        status: 'Active'
-      },
-      {
-        id: 2,
-        name: 'Bob Smith',
-        email: 'bob@example.com',
-        location: 'California, CA',
-        experience_years: 5,
-        skills: 'Python, Django, PostgreSQL',
-        status: 'Active'
-      },
-      {
-        id: 3,
-        name: 'Carol Davis',
-        email: 'carol@example.com',
-        location: 'Texas, TX',
-        experience_years: 2,
-        skills: 'Java, Spring, MySQL',
-        status: 'Active'
-      },
-      {
-        id: 4,
-        name: 'David Wilson',
-        email: 'david@example.com',
-        location: 'Florida, FL',
-        experience_years: 4,
-        skills: 'PHP, Laravel, Vue.js',
-        status: 'Inactive'
+    async function fetchJobseekers() {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/jobseekers');
+        const data = await response.json();
+        
+        if (data.success) {
+          setJobseekers(data.data);
+        } else {
+          console.error('Failed to fetch jobseekers:', data.error);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching jobseekers:', error);
+        setLoading(false);
       }
-    ];
+    }
 
-    setTimeout(() => {
-      setJobseekers(mockJobseekers);
-      setLoading(false);
-    }, 500);
+    fetchJobseekers();
   }, []);
 
   const filteredJobseekers = jobseekers.filter(jobseeker =>
