@@ -291,7 +291,7 @@ export default function NotesSection({ jobseekerId }: NotesSectionProps) {
                   <div className="flex items-center space-x-3">
                     <div className="h-10 w-10 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-md">
                       <span className="text-sm font-bold text-white">
-                        {note.created_by_name.split(' ').map(n => n[0]).join('')}
+                        {note.created_by_name ? note.created_by_name.split(' ').map(n => n[0]).join('') : 'U'}
                       </span>
                     </div>
                     <div>
